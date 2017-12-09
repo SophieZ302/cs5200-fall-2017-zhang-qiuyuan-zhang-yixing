@@ -13,13 +13,18 @@ import javax.persistence.*;
 
 public class Producer extends User implements Serializable {
 
-	
 	private String companyName;
 	private static final long serialVersionUID = 1L;
 
 	public Producer() {
 		super();
-	}   
+	}
+
+	public Producer(String username, String password, String email, String companyName) {
+		super(username, password, email);
+		this.companyName = companyName;
+	}
+
 	public String getCompanyName() {
 		return this.companyName;
 	}
@@ -27,5 +32,5 @@ public class Producer extends User implements Serializable {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-   
+
 }

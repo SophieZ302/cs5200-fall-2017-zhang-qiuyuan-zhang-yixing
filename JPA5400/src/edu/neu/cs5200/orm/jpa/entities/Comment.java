@@ -14,49 +14,71 @@ public class Comment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int userId;
 	private String content;
-	private int movieId;
-	private int rating;
+	private int rate;
+	@ManyToOne
+	private User user;
+	@ManyToOne
+	private Movie movie;
+
 	private static final long serialVersionUID = 1L;
 
 	public Comment() {
 		super();
-	}   
+	}
+
+	public Comment(String content, int rate) {
+		super();
+		this.content = content;
+		this.rate = rate;
+	}
+
+	public Comment(String content, int rate, User user, Movie movie) {
+		super();
+		this.content = content;
+		this.rate = rate;
+		this.user = user;
+		this.movie = movie;
+	}
+
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}   
-	public int getUserId() {
-		return this.userId;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}   
 	public String getContent() {
-		return this.content;
+		return content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
-	}   
-	public int getMovieId() {
-		return this.movieId;
 	}
 
-	public void setMovieId(int movieId) {
-		this.movieId = movieId;
-	}   
-	public int getRating() {
-		return this.rating;
+	public int getRate() {
+		return rate;
 	}
 
-	public void setRating(int rating) {
-		this.rating = rating;
+	public void setRate(int rate) {
+		this.rate = rate;
 	}
-   
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Movie getMovie() {
+		return movie;
+	}
+
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
+
 }
