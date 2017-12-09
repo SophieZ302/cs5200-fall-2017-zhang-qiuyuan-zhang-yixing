@@ -14,6 +14,7 @@
 		<class>edu.neu.cs5200.orm.jpa.entities.Critique</class>
 		<class>edu.neu.cs5200.orm.jpa.entities.Producer</class>
 		<class>edu.neu.cs5200.orm.jpa.entities.Comment</class>
+		<class>edu.neu.cs5200.orm.jpa.entities.Admin</class>
 		<properties>
 			<property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost/cs5200"></property>
 			<property name="eclipselink.jdbc.user" value="cs5200"></property>

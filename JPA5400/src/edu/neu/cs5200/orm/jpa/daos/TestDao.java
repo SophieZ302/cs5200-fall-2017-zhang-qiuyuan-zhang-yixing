@@ -1,6 +1,7 @@
 package edu.neu.cs5200.orm.jpa.daos;
 
 import edu.neu.cs5200.orm.jpa.entities.Actor;
+import edu.neu.cs5200.orm.jpa.entities.Admin;
 import edu.neu.cs5200.orm.jpa.entities.Comment;
 import edu.neu.cs5200.orm.jpa.entities.Critique;
 import edu.neu.cs5200.orm.jpa.entities.Director;
@@ -15,6 +16,7 @@ public class TestDao {
 		ActorDao actorDao = new ActorDao();
 		DirectorDao directorDao = new DirectorDao();
 
+		AdminDao adminDao = new AdminDao();
 		CritiqueDao critiqueDao = new CritiqueDao();
 		RegularDao regularDao = new RegularDao();
 		ProducerDao producerDao = new ProducerDao();
@@ -25,9 +27,7 @@ public class TestDao {
 		movieDao.deleteAllMovies();
 		actorDao.deleteAllActors();
 		directorDao.deleteAllDirector();
-		critiqueDao.deleteAllCritiques();
-		regularDao.deleteAllRegulars();
-		producerDao.deleteAllProducers();
+		adminDao.deleteAllUsers();
 
 		// b. Create a movie.
 		Movie blade = new Movie("Blade Runner");
@@ -64,34 +64,35 @@ public class TestDao {
 		movieDao.addActor(close, mel);
 		movieDao.addDirector(close, ste);
 
-		// e. Create a Critique.
-		Critique cri1 = new Critique("cri1", "pass", "cri1@test1.com", "Christ", "Yik");
-		critiqueDao.createCritique(cri1);
+		// e. Create a users.
+		Admin admin = new Admin("admin", "admin", "admin@test1.com");
+		adminDao.createAdmin(admin);
+		
+		Regular alice = new Regular("alice", "alice", "alice@test1.com");
+		regularDao.createRegular(alice);
+		
+		Critique bob = new Critique("bob", "bob", "bob@test1.com", "Christ", "Yik");
+		critiqueDao.createCritique(bob);
 
-		// f. Create a Regular user.
-		Regular r1 = new Regular("reg1", "pass", "reg1@test1.com");
-		regularDao.createRegular(r1);
+		Producer charlie = new Producer("charlie", "charlie", "charlie@test1.com", "star movie company");
+		producerDao.createProducer(charlie);
 
-		// g. Create a Producer.
-		Producer p1 = new Producer("pro1", "pass", "pro1@test1.com", "star movie company");
-		producerDao.createProducer(p1);
-
-		// h. Create comments.
+		// f. Create comments.
 		Comment excellent = new Comment("excellent", 5);
 		Comment good = new Comment("good", 4);
 		Comment bad = new Comment("bad", 0);
 
-		commentDao.createComment(excellent, cri1.getId(), blade.getId());
-		commentDao.createComment(excellent, cri1.getId(), raiders.getId());
-		commentDao.createComment(good, cri1.getId(), close.getId());
+		commentDao.createComment(good, alice.getId(), blade.getId());
+		commentDao.createComment(bad, alice.getId(), raiders.getId());
+		commentDao.createComment(bad, alice.getId(), close.getId());
+		
+		commentDao.createComment(excellent, bob.getId(), blade.getId());
+		commentDao.createComment(excellent, bob.getId(), raiders.getId());
+		commentDao.createComment(good, bob.getId(), close.getId());
 
-		commentDao.createComment(good, r1.getId(), blade.getId());
-		commentDao.createComment(bad, r1.getId(), raiders.getId());
-		commentDao.createComment(bad, r1.getId(), close.getId());
-
-		commentDao.createComment(excellent, p1.getId(), blade.getId());
-		commentDao.createComment(good, p1.getId(), raiders.getId());
-		commentDao.createComment(bad, p1.getId(), close.getId());
+		commentDao.createComment(excellent, charlie.getId(), blade.getId());
+		commentDao.createComment(good, charlie.getId(), raiders.getId());
+		commentDao.createComment(bad, charlie.getId(), close.getId());
 	}
 
 	public static void main(String[] args) {

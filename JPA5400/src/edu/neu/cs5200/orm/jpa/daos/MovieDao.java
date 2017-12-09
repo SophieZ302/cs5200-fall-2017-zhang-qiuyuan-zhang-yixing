@@ -67,6 +67,17 @@ public class MovieDao extends BaseDao {
 		}
 		return movies;
 	}
+	
+	public List<Movie> getMoviesWithName(String name) {
+		List<Movie> movies = findAllMovie();
+		List<Movie> res = new ArrayList<>();
+		for (Movie movie : movies) {
+			if (movie.getTitle().toLowerCase().contains(name.toLowerCase())) {
+				res.add(movie);
+			}
+		}
+		return res;
+	}
 
 	public void updateMovie(int id, Movie newMovie) {
 		EntityManager em = factory.createEntityManager();
