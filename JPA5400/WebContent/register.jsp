@@ -16,32 +16,60 @@
 </head>
 <body>
 	<div class="container">
+		<%
+			String action = request.getParameter("createUser");
+			String name = request.getParameter("username");
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+			String type = request.getParameter("type");
+			if ("create".equals(action)) {
+				if (type.equals("1")) {
+					Regular person = new Regular(name, password, email);
+					RegularDao rdao = new RegularDao();
+					rdao.createRegular(person);
+				} else if (type.equals("2")) {
+					Crtique person = new Crtique(name, password, email);
+					CritiqueDao dao = new CritiqueDao();
+					dao.createRegular(person);
+				} else if (type.equals("3")) {
+					Producer person = new Producer(name, password, email);
+					ProducerDao dao = new ProducerDao();
+					dao.createProducer(person);
+				}
+			}
+
+			RegularDao rdao = new RegularDao();
+		%>
+
+
+
 		<br>
 		<h2 class="text-secondary">Please log in</h2>
-		<form>
+		<form action="movies.jsp">
 			<div class="form-group">
-				<label>Username</label> <input class="form-control"
+				<label>Username</label> <input class="form-control" name="username"
 					placeholder="Enter username">
 			</div>
 			<div class="form-group">
-				<label>Email</label> <input class="form-control"
+				<label>Email</label> <input class="form-control" name = "email"
 					placeholder="abc@xmail.com">
 			</div>
 			<div class="form-group">
-				<label>Password</label> <input class="form-control"
+				<label>Password</label> <input class="form-control" name = "password"
 					placeholder="Enter password">
 			</div>
 
-			<select class="custom-select mb-2 mr-sm-2 mb-sm-0"
+			<select class="custom-select mb-2 mr-sm-2 mb-sm-0" name = "type"
 				id="inlineFormCustomSelect">
 				<option selected>Choose a role</option>
-				<option value="1">Movie Viewer - give comments and ratings on movies</option>
-				<option value="2">Professional Critique - provide professional review and ratings movies</option>
+				<option value="1">Movie Viewer - give comments and ratings
+					on movies</option>
+				<option value="2">Professional Critique - provide
+					professional review and ratings movies</option>
 				<option value="3">Producer - upload movie, actor details</option>
 			</select>
-
-
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" name="createUser" value="create"
+				class="btn btn-primary">Submit</button>
 		</form>
 	</div>
 </body>

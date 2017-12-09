@@ -5,34 +5,46 @@
 <html>
 
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js""></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Movie Reviews</title>
 </head>
 
 <body>
 	<div class="container">
-		<h2>Home Page
-		<a class = "btn btn-success float-right" href ="login.jsp">Log In</a>
+		<br>
+		<h2>
+			Home Page <a class="btn btn-success float-right" href="login.jsp">Log
+				In</a>
 		</h2>
 		<br>
 		<div class="input-group">
-			<input type="text" class="form-control" placeholder="Search for movies...">
-			<span class="input-group-btn">
+			<input type="text" class="form-control"
+				placeholder="Search for movies..."> <span
+				class="input-group-btn">
 				<button class="btn btn-secondary" type="searchBtn">Go!</button>
 			</span>
-		</div><!-- /input-group -->
-
+		</div>
+		<!-- /input-group -->
 		<%
 			MovieDao dao = new MovieDao();
 			List<Movie> movies = dao.findAllMovie();
 		%>
-
-		<br><br><h3>All Movies</h3>
+		<br>
+		<br>
+		<h3>All Movies</h3>
 		<table class="table table-striped">
+			<tr>
+				<td>Name</td>
+				<td>Professional Rating</td>
+				<td>Popular Rating</td>
+			</tr>
 			<%
 				for (Movie movie : movies) {
 			%>

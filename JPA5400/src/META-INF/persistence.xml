@@ -19,7 +19,7 @@
 			<property name="eclipselink.jdbc.user" value="cs5200"></property>
 			<property name="eclipselink.jdbc.password" value="cs5200"></property>
 			<property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"></property>
-			<!-- <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/> -->
+			<!--property name="eclipselink.ddl-generation" value="drop-and-create-tables"/-->
 		</properties>
 	</persistence-unit>
 </persistence>
