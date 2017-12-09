@@ -25,8 +25,12 @@ public class UserDao extends BaseDao {
 				+ "where a.username =:name "
 				+ "and a.password =:pass", User.class).setParameter("name", userName)
 				.setParameter("pass", passWord);
-		rst = (User) query.getSingleResult();
-	
+		List<User> list =  query.getResultList();
+		if (list.size() == 0) {
+			return null;
+		} else  {
+			rst = list.get(0);
+		}
 		try {
 			em.getTransaction().commit();
 		} catch (RollbackException ex) {

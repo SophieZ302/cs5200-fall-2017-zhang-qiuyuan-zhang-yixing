@@ -22,30 +22,36 @@
 			String password = request.getParameter("password");
 			String type = request.getParameter("type");
 			if ("login".equals(action)) {
-				 
-				
-				
-				response.sendRedirect("index.jsp");
+				UserDao dao = new UserDao();
+				User user = dao.getUserByUserNamePassword(name, password);
+				if (user != null) {
+					session.setAttribute("user", user);
+					response.sendRedirect("index.jsp");
+				} else {
+					%>
+					<div class="alert alert-warning">
+					<strong>Warning!</strong> user name and password combination not found
+					</div>
+					<%
+				}
 			}
-			
 		%>
-		
-		<br>
-	
-	
-		<br>
-		<h2 class = "text-secondary">Please log in</h2>
-		<form action = "login.jsp">
-			<div class = "form-group">
-				<label>Username</label>
-				<input class = "form-control" name = "username" placeholder = "Enter username">
+
+		<br> <br>
+		<h2 class="text-secondary">Please log in</h2>
+		<form action="login.jsp">
+			<div class="form-group">
+				<label>Username</label> <input class="form-control" name="username"
+					placeholder="Enter username">
 			</div>
-			<div class = "form-group">
-				<label>Password</label>
-				<input class = "form-control" name = "password" placeholder = "Enter password">
+			<div class="form-group">
+				<label>Password</label> <input class="form-control" name="password"
+					placeholder="Enter password">
 			</div>
-			<button type="submit" class="btn btn-primary" name = "submit_form" value = "login">Submit</button>
-			<a href ="register.jsp" class="btn btn-secondary">Register New User</a>			
+			<button type="submit" class="btn btn-primary" name="submit_form"
+				value="login">Submit</button>
+			<a href="register.jsp" class="btn btn-secondary">Register New
+				User</a>
 		</form>
 	</div>
 </body>
