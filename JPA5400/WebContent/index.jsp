@@ -73,7 +73,10 @@
 				for (Movie movie : movies) {
 			%>
 			<tr>
-				<td><a href ="index.jsp"><%=movie.getTitle()%></a></td>
+				<td><a href ="moviedetail.jsp?movieId=
+				<%=movie.getId()%>">
+				
+				<%=movie.getTitle()%></a></td>
 				<td><%=movie.getCritiqueRate()%></td>
 				<td><%=movie.getRegularRate()%></td>
 			</tr>
