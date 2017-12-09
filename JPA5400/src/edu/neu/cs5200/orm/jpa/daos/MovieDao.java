@@ -111,6 +111,40 @@ public class MovieDao extends BaseDao {
 		}
 	}
 	
+	public void addActor(Movie movie, Actor actor) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		movie.getActors().add(actor);
+		actor.getMovies().add(movie);
+		em.merge(movie);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void addDirector(Movie movie, Director director) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		movie.getDirectors().add(director);
+		director.getMovies().add(movie);
+		em.merge(movie);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
 
 	public static void test() {
 		MovieDao movieDao = new MovieDao();		

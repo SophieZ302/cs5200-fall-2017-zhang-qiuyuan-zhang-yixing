@@ -20,6 +20,10 @@ public class Producer extends User implements Serializable {
 		super();
 	}
 
+	public Producer(String username, String password, String email) {
+		super(username, password, email);
+	}
+
 	public Producer(String username, String password, String email, String companyName) {
 		super(username, password, email);
 		this.companyName = companyName;

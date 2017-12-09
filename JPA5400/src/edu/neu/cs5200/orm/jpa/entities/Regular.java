@@ -14,5 +14,9 @@ public class Regular extends User implements Serializable {
 	public Regular() {
 		super();
 	}
+
+	public Regular(String username, String password, String email) {
+		super(username, password, email);
+	}
    
 }

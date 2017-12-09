@@ -14,11 +14,11 @@ import javax.persistence.*;
 @Entity
 
 public class Director extends Person implements Serializable {
-	
+
 	private int oscarWins;
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@ManyToMany(mappedBy = "directors", cascade = CascadeType.ALL)
 	private List<Movie> moviesDirected = null;
 
@@ -30,15 +30,20 @@ public class Director extends Person implements Serializable {
 	}
 
 	public void setMovies(List<Movie> movies) {
-	       this.moviesDirected = movies;
-	       for(Movie movie: movies) {
-	    	   		movie.getDirectors().add(this);
-	       }
-	} 
+		this.moviesDirected = movies;
+		for (Movie movie : movies) {
+			movie.getDirectors().add(this);
+		}
+	}
 
 	public Director() {
 		super();
-	}   
+	}
+
+	public Director(String firstName, String lastName) {
+		super(firstName, lastName);
+	}
+
 	public int getOscarWins() {
 		return this.oscarWins;
 	}
@@ -46,5 +51,5 @@ public class Director extends Person implements Serializable {
 	public void setOscarWins(int oscarWins) {
 		this.oscarWins = oscarWins;
 	}
-   
+
 }
