@@ -37,8 +37,8 @@
 			%>
 			<tr>
 				<td><%= movie.getTitle() %></td>
-				<td><%= movie.getCretiqueReview() %></td>
-				<td><%= movie.getRegularReview() %></td>
+				<td><%= dao.getRate(movie.getId()) %></td>
+				<td><%= //movie.getRegularReview() %></td>
 			</tr>
 			<%
 				}
