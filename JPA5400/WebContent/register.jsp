@@ -27,25 +27,26 @@
 					Regular person = new Regular(name, password, email);
 					RegularDao rdao = new RegularDao();
 					rdao.createRegular(person);
+					session.setAttribute("user", person);
 				} else if (type.equals("2")) {
-					Crtique person = new Crtique(name, password, email);
+					Critique person = new Critique(name, password, email);
 					CritiqueDao dao = new CritiqueDao();
-					dao.createRegular(person);
+					dao.createCritique(person);
+					session.setAttribute("user", person);
 				} else if (type.equals("3")) {
 					Producer person = new Producer(name, password, email);
 					ProducerDao dao = new ProducerDao();
 					dao.createProducer(person);
+					session.setAttribute("user", person);
 				}
+				response.sendRedirect("index.jsp");
 			}
-
-			RegularDao rdao = new RegularDao();
+			
 		%>
-
-
 
 		<br>
 		<h2 class="text-secondary">Please log in</h2>
-		<form action="movies.jsp">
+		<form action="register.jsp">
 			<div class="form-group">
 				<label>Username</label> <input class="form-control" name="username"
 					placeholder="Enter username">

@@ -19,10 +19,22 @@
 <body>
 	<div class="container">
 		<br>
-		<h2>
-			Home Page <a class="btn btn-success float-right" href="login.jsp">Log
-				In</a>
-		</h2>
+		<h2> Home Page </h2>
+			 <%
+			 	User user = (User) session.getAttribute("user");
+			 	if (user == null) {
+			 %>
+			 		<a class="btn btn-success float-right" href="login.jsp">LogIn</a>
+			 <% 
+			 	} else {
+			 		%>
+			 		<p class = "float-left"> Welcome <%= user.getUsername()%></p>			 		
+			 		<a class="btn btn-secondary float-right" href="index.jsp">Logout</a>
+			 		<%	
+			 	} 
+			%>
+			
+		
 		<br>
 		<div class="input-group">
 			<input type="text" class="form-control"
@@ -32,6 +44,7 @@
 			</span>
 		</div>
 		<!-- /input-group -->
+		
 		<%
 			MovieDao dao = new MovieDao();
 			List<Movie> movies = dao.findAllMovie();
