@@ -11,6 +11,7 @@ import edu.neu.cs5200.orm.jpa.entities.Actor;
 import edu.neu.cs5200.orm.jpa.entities.Comment;
 import edu.neu.cs5200.orm.jpa.entities.Director;
 import edu.neu.cs5200.orm.jpa.entities.Movie;
+import edu.neu.cs5200.orm.jpa.entities.Producer;
 
 public class MovieDao extends BaseDao {
 	public MovieDao() {
@@ -55,8 +56,7 @@ public class MovieDao extends BaseDao {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		Query query = em.createQuery("select a from Movie a", Movie.class);
-		@SuppressWarnings("unchecked")
-		List<Movie> movies = (List<Movie>)query.getResultList();
+		List<Movie> movies = query.getResultList();
 		try {
 			em.getTransaction().commit();
 		} catch (RollbackException ex) {
@@ -89,10 +89,10 @@ public class MovieDao extends BaseDao {
 		}
 	}
 
-	public void deleteAllMovie() {
-		List<Movie> all = findAllMovie();
-		for (Movie a : all) {
-			deleteMovie(a.getId());
+	public void deleteAllMovies() {
+		List<Movie> list = findAllMovie();
+		for (Movie movie : list) {
+			deleteMovie(movie.getId());
 		}
 	}
 
@@ -100,7 +100,7 @@ public class MovieDao extends BaseDao {
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		em.createQuery("DELETE FROM Movie act WHERE act.id=:id").setParameter("id",id).executeUpdate();
+		em.remove(em.find(Movie.class, id));
 		try {
 			em.getTransaction().commit();
 		} catch (RollbackException ex) {
@@ -149,7 +149,7 @@ public class MovieDao extends BaseDao {
 	public static void test() {
 		MovieDao movieDao = new MovieDao();		
 		//a. remove all movies
-		movieDao.deleteAllMovie();
+		movieDao.deleteAllMovies();
 
 		ActorDao aDao = new ActorDao();
 		DirectorDao dDao = new DirectorDao();
