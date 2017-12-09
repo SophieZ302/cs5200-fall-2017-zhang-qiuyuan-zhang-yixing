@@ -21,47 +21,62 @@ public class Movie implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String title;
-	private int regularReview;
-	private int cretiqueReview;
-	
+
 	@ManyToOne
 	private MovieLibrary library;
 
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "MOVIE2ACTOR")
 	private List<Actor> actors = null;
-	
-	@ManyToMany(cascade=CascadeType.ALL)
+
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "MOVIE2DIRECTOR")
 	private List<Director> directors = null;
-	
+
+	@OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+	private List<Comment> comments = new ArrayList<>();
+
 	private static final long serialVersionUID = 1L;
-	
-	
-	@XmlTransient public List<Director> getDirectors() {
+
+	public Movie(String title) {
+		super();
+		this.title = title;
+	}
+
+	@XmlTransient
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+
+	@XmlTransient
+	public List<Director> getDirectors() {
 		if (directors == null) {
 			directors = new ArrayList<Director>();
 		}
 		return directors;
 	}
-	
+
 	public void setDirectors(List<Director> directors) {
 		this.directors = directors;
 		for (Director director : directors) {
 			director.getMovies().add(this);
 		}
 	}
-	
-	
-	//get actors for this movie
-	@XmlTransient  public List<Actor> getActors() {
+
+	// get actors for this movie
+	@XmlTransient
+	public List<Actor> getActors() {
 		if (actors == null) {
 			actors = new ArrayList<Actor>();
 		}
 		return actors;
 	}
 
-	//add movies to actor
+	// add movies to actor
 	public void setActors(List<Actor> actors) {
 		this.actors = actors;
 		for (Actor actor : actors) {
@@ -88,21 +103,4 @@ public class Movie implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-	public int getRegularReview() {
-		return regularReview;
-	}
-
-	public void setRegularReview(int regularReview) {
-		this.regularReview = regularReview;
-	}
-
-	public int getCretiqueReview() {
-		return cretiqueReview;
-	}
-
-	public void setCretiqueReview(int cretiqueReview) {
-		this.cretiqueReview = cretiqueReview;
-	}
-
 }

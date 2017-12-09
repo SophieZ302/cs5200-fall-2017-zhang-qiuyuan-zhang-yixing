@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import edu.neu.cs5200.orm.jpa.entities.Actor;
+import edu.neu.cs5200.orm.jpa.entities.Comment;
 import edu.neu.cs5200.orm.jpa.entities.Director;
 import edu.neu.cs5200.orm.jpa.entities.Movie;
 
@@ -65,6 +66,31 @@ public class MovieDao extends BaseDao {
 			em.close();
 		}
 		return movies;
+	}
+	
+	public double getRate(int movieId) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Movie movie = em.find(Movie.class, movieId);
+		List<Comment> comments = movie.getComments();
+		double sum = 0.0;
+		for (Comment comment : comments) {
+			sum += comment.getRate();
+		}
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		if (comments.size() == 0) {
+			return 0;
+		} else {
+			return sum / comments.size();
+		}
 	}
 
 	public void updateMovie(int id, Movie newMovie) {
@@ -248,7 +274,10 @@ public class MovieDao extends BaseDao {
 	}
 
 	public static void main(String[] args) {
-		test();
+//		test();
+		MovieDao dao = new MovieDao();
+		System.out.print(dao.getRate(1));
+		
 	}
 
 }
