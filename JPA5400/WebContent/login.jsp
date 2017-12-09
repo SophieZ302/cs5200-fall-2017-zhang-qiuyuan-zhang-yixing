@@ -16,18 +16,35 @@
 </head>
 <body>
 	<div class="container">
+		<%
+			String action = request.getParameter("submit_form");
+			String name = request.getParameter("username");
+			String password = request.getParameter("password");
+			String type = request.getParameter("type");
+			if ("login".equals(action)) {
+				 
+				
+				
+				response.sendRedirect("index.jsp");
+			}
+			
+		%>
+		
+		<br>
+	
+	
 		<br>
 		<h2 class = "text-secondary">Please log in</h2>
-		<form>
+		<form action = "login.jsp">
 			<div class = "form-group">
 				<label>Username</label>
-				<input class = "form-control" placeholder = "Enter username">
+				<input class = "form-control" name = "username" placeholder = "Enter username">
 			</div>
 			<div class = "form-group">
 				<label>Password</label>
-				<input class = "form-control" placeholder = "Enter password">
+				<input class = "form-control" name = "password" placeholder = "Enter password">
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary" name = "submit_form" value = "login">Submit</button>
 			<a href ="register.jsp" class="btn btn-secondary">Register New User</a>			
 		</form>
 	</div>

@@ -43,7 +43,7 @@
 			}
 			
 		%>
-
+		
 		<br>
 		<h2 class="text-secondary">Please log in</h2>
 		<form action="register.jsp">

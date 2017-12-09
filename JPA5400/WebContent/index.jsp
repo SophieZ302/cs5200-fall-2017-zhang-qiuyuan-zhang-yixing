@@ -18,23 +18,32 @@
 
 <body>
 	<div class="container">
-		<br>
-		<h2> Home Page </h2>
+		<br>	
 			 <%
+			 	String action = request.getParameter("logout_action");
+			 	if ("logout".equals(action)){
+			 		session.setAttribute("user", null);
+			 	}
+			%>
+			<%
 			 	User user = (User) session.getAttribute("user");
 			 	if (user == null) {
-			 %>
+			 %>		<h2>Home Page  
 			 		<a class="btn btn-success float-right" href="login.jsp">LogIn</a>
+			 		</h2>
 			 <% 
 			 	} else {
 			 		%>
-			 		<p class = "float-left"> Welcome <%= user.getUsername()%></p>			 		
-			 		<a class="btn btn-secondary float-right" href="index.jsp">Logout</a>
+			 		<h2>Home Page
+			 			<button type="submit" name = "logout_action" value = "logout" class = "btn btn-secondary float-right">Logout</button>
+			 		</h2>
+			 		<p class = "float-left"> Welcome <%=user.getUsername()%></p>			 		
+			 		<form method="post" action="index.jsp">   
+			 		</form>
 			 		<%	
 			 	} 
 			%>
-			
-		
+		<br>
 		<br>
 		<div class="input-group">
 			<input type="text" class="form-control"
@@ -62,7 +71,7 @@
 				for (Movie movie : movies) {
 			%>
 			<tr>
-				<td><%=movie.getTitle()%></td>
+				<td><a href ="index.jsp"><%=movie.getTitle()%></a></td>
 				<td><%=movie.getCritiqueRate()%></td>
 				<td><%=movie.getRegularRate()%></td>
 			</tr>
