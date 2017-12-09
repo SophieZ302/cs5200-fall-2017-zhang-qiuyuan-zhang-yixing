@@ -115,7 +115,7 @@ public class CommentDao extends BaseDao {
 	public static void main(String[] args) {
 		CommentDao dao = new CommentDao();
 		Comment c1 = new Comment("good", 4);
-		dao.createComment(c1, 3, 1);
+		dao.createComment(c1, 4, 1);
 	}
 	
 }

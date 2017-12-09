@@ -106,4 +106,10 @@ public class CritiqueDao extends UserDao {
 			em.close();
 		}
 	}
+	
+	public static void main(String[] args) {
+		CritiqueDao dao = new CritiqueDao();
+		Critique c1 = new Critique("cri1", "pass", "123@123.com");
+		dao.createCritique(c1);
+	}
 }

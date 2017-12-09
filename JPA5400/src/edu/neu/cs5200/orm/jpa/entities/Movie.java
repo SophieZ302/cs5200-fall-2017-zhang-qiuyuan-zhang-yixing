@@ -42,6 +42,52 @@ public class Movie implements Serializable {
 		super();
 		this.title = title;
 	}
+	
+	public double getCritiqueRate() {
+		double sum = 0;
+		int count = 0;
+		for (Comment c : comments) {
+			if (c.getUser() instanceof Critique) {
+				count++;
+				sum += c.getRate();
+			}
+		}
+		if (count == 0) {
+			return 0;
+		} else {
+			return sum / count;
+		}
+	}
+	
+	public double getRegularRate() {
+		double sum = 0;
+		int count = 0;
+		for (Comment c : comments) {
+			if (!(c.getUser() instanceof Critique)) {
+				count++;
+				sum += c.getRate();
+			}
+		}
+		if (count == 0) {
+			return 0;
+		} else {
+			return sum / count;
+		}
+	}
+	
+	public double getRate() {
+		double sum = 0;
+		int count = 0;
+		for (Comment c : comments) {
+			count++;
+			sum += c.getRate();
+		}
+		if (count == 0) {
+			return 0;
+		} else {
+			return sum / count;
+		}
+	}
 
 	@XmlTransient
 	public List<Comment> getComments() {

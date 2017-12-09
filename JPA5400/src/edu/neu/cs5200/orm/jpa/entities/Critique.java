@@ -20,6 +20,14 @@ public class Critique extends User implements Serializable {
 	public Critique() {
 		super();
 	}   
+	
+	
+	public Critique(String username, String password, String email) {
+		super(username, password, email);
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public String getFirstname() {
 		return this.firstname;
 	}
