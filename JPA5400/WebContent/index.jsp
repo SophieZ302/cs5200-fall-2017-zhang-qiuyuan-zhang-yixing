@@ -38,8 +38,8 @@
 			%>
 			<tr>
 				<td><%=movie.getTitle()%></td>
-				<td><%=//movie.getCretiqueReview()%></td>
-				<td><%=//movie.getRegularReview()%></td>
+				<td><%=movie.getCritiqueRate()%></td>
+				<td><%=movie.getRegularRate()%></td>
 			</tr>
 			<%
 				}
