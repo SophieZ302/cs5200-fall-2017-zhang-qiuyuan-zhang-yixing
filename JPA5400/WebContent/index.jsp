@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
-	import="edu.neu.cs5200.orm.jpa.daos.*,  edu.neu.cs5200.orm.jpa.entities.*, java.util.*"%>
+	import="edu.neu.cs5200.orm.jpa.daos.*,  edu.neu.cs5200.orm.jpa.entities.*, edu.neu.cs5200.orm.jpa.jsonwebservice.*,java.util.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -125,6 +125,30 @@
 			</div>
 		</form>
 		<!-- /input-group -->
+		
+		<%
+			if(isSearch){
+				JsonWebServiceClient cl = new JsonWebServiceClient();
+				ApiMovieData movieApiData = cl.fetchData(txt);
+		%>
+		<br><br>
+		<h3>Movie From OMDB API</h3>
+		<br>
+		<table class="table table-striped">
+			<tr>
+				<td>Name</td>
+				<td>Plot</td>
+				<td>Rating</td>
+			</tr>
+			<tr>
+				<td><a href="apimoviedetail.jsp?movieId=
+				<%=movieApiData.getId()%>"><%=movieApiData.getTitle()%></a></td>
+				<td><%=movieApiData.getPlot()%></td>
+				<td><%=movieApiData.getRating()%></td>
+			</tr>
+		</table>
+		<% } %>
+ 		
 
 		<%
 			MovieDao dao = new MovieDao();
@@ -132,9 +156,9 @@
 				movies = dao.findAllMovie();
 			}
 		%>
-		<br> <br>
+		<br><br>
 		<% if (movies!= null && movies.size()!= 0) { %>
-		<h3>All Movies</h3>
+		<h3>All Movies From Database</h3>
 		<table class="table table-striped">
 			<tr>
 				<td>Name</td>
