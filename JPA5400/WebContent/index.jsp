@@ -59,22 +59,81 @@
 		<br>
 		<br>
 		
+		<%
+			String action = request.getParameter("logout_action");
+			if ("logout".equals(action)) {
+				session.setAttribute("user", null);
+			}
+		%>
+		<%
+			User user = (User) session.getAttribute("user");
+			if (user == null) {
+		%>
+		<h2>
+			<a href = "index.jsp">Home Page</a> <a class="btn btn-success float-right" href="login.jsp">LogIn</a>
+		</h2>
+		<%
+			} else {
+		%>
+		<h2>
+			<a href = "index.jsp">Home Page</a>
+			<form action="index.jsp">
+				<button type="submit" name="logout_action" value="logout"
+					class="btn btn-secondary float-right">Logout</button>
+			</form>
+		</h2>
+		<p class="float-left">
+			Welcome
+			<%=user.getUsername()%>
+			<a href="otherUser.jsp">[profile]</a>
+		</p>
+		<form method="post" action="index.jsp"></form>
+		<%
+			}
+		%>
+
+		<%
+			boolean isSearch = false;
+			List<Movie> movies = null;
+			List<Actor> actors = null;
+			List<Director> directors = null;
+			String action2 = request.getParameter("search_action");
+			String txt = request.getParameter("searchtxt");
+
+			if (action2 != null && action2.equals("search") && txt != null && txt.length() != 0) {
+				MovieDao md = new MovieDao();
+				movies = md.getMoviesWithName(txt);
+
+				ActorDao ad = new ActorDao();
+				actors = ad.getActorsWithName(txt);
+
+				DirectorDao dd = new DirectorDao();
+				directors = dd.getDirectorWithName(txt);
+
+				isSearch = true;
+			}
+		%>
+
+		<br> <br>
+
 		<form action="index.jsp">
-		<div class="input-group">
-			<input name="searchtxt"  type="text" class="form-control" placeholder="Search for movies..."> 
-			<button name ="search_action" value = "search" class="btn btn-secondary" type="searchBtn" >Go!</button>
-		</div>
+			<div class="input-group">
+				<input name="searchtxt" type="text" class="form-control"
+					placeholder="Search for movies...">
+				<button name="search_action" value="search"
+					class="btn btn-secondary" type="searchBtn">Go!</button>
+			</div>
 		</form>
 		<!-- /input-group -->
-		
+
 		<%
 			MovieDao dao = new MovieDao();
-			if (movies == null) {
+			if (!isSearch && movies == null) {
 				movies = dao.findAllMovie();
 			}
 		%>
-		<br>
-		<br>
+		<br> <br>
+		<% if (movies!= null && movies.size()!= 0) { %>
 		<h3>All Movies</h3>
 		<table class="table table-striped">
 			<tr>
@@ -86,10 +145,8 @@
 				for (Movie movie : movies) {
 			%>
 			<tr>
-				<td><a href ="moviedetail.jsp?movieId=
-				<%=movie.getId()%>">
-				
-				<%=movie.getTitle()%></a></td>
+				<td><a href="moviedetail.jsp?movieId=
+				<%=movie.getId()%>"><%=movie.getTitle()%></a></td>
 				<td><%=movie.getCritiqueRate()%></td>
 				<td><%=movie.getRegularRate()%></td>
 			</tr>
@@ -98,6 +155,52 @@
 			%>
 		</table>
 
+		<% }
+			if (isSearch) {
+		%>
+		<br>
+		<br>
+		<%
+			if (actors != null && actors.size()!= 0) {
+		%>
+		<h4>All Actors</h4>
+		<table class="table table-striped">
+			<%
+				for (Actor actor : actors) {
+							String actorname = actor.getFirstName() + " " + actor.getLastName();
+			%>
+			<tr>
+				<td><a href="actordetail.jsp?actorId=<%=actor.getId()%>"><%=actorname%></a></td>
+			</tr>
+			<%
+				}
+			%>
+		</table>
+		<br>
+		<br>
+		<%
+			}
+		%>
+		<%
+			if (directors != null && directors.size() != 0) {
+		%>
+		<h4>All Directors</h4>
+		<table class="table table-striped">
+			<%
+				for (Director d : directors) {
+							String name = d.getFirstName() + " " + d.getLastName();
+			%>
+			<tr>
+				<td><a href="directordetail.jsp?directorId=<%=d.getId()%>"><%=name%></a></td>
+			</tr>
+			<%
+				}
+			%>
+		</table>
+		<%
+			}
+		}
+		%>
 	</div>
 </body>
 </html>

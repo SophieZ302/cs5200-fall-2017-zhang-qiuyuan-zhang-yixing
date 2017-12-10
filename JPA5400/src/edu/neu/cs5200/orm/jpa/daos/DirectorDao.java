@@ -1,5 +1,6 @@
 package edu.neu.cs5200.orm.jpa.daos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -7,6 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
+import edu.neu.cs5200.orm.jpa.entities.Actor;
 import edu.neu.cs5200.orm.jpa.entities.Director;
 
 public class DirectorDao extends BaseDao{
@@ -137,7 +139,18 @@ public class DirectorDao extends BaseDao{
 			em.close();
 		}
 	}
-
+	public List<Director> getDirectorWithName(String name) {
+		List<Director> ds = findAllDirector();
+		List<Director> res = new ArrayList<>();
+		for (Director a : ds) {
+			if (a.getFirstName().toLowerCase().contains(name.toLowerCase())) {
+				res.add(a);
+			} else if (a.getLastName().toLowerCase().contains(name.toLowerCase())) {
+				res.add(a);
+			}
+		}
+		return res;
+	}
 	
 	public static void test() {
 		Director a = new Director();
