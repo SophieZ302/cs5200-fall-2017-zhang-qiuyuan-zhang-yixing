@@ -30,7 +30,7 @@ public class TestDao {
 		adminDao.deleteAllUsers();
 
 		// b. Create a movie.
-		Movie blade = new Movie("Blade Runner");
+		Movie blade = new Movie("Blade Runner", "A 1982 American neo-noir science fiction film.");
 		movieDao.createMovie(blade);
 		Actor har = new Actor("Harrison", "Ford");
 		actorDao.createActor(har);
@@ -43,7 +43,7 @@ public class TestDao {
 		movieDao.addDirector(blade, rid);
 
 		// c. Create a movie.
-		Movie raiders = new Movie("Raiders of The Lost Ark");
+		Movie raiders = new Movie("Raiders of The Lost Ark", "A 1981 American action adventure film.");
 		movieDao.createMovie(raiders);
 		Actor kar = new Actor("Karen", "Allen");
 		actorDao.createActor(kar);
@@ -54,7 +54,7 @@ public class TestDao {
 		movieDao.addDirector(raiders, ste);
 
 		// d. Create a movie.
-		Movie close = new Movie("Close ENcounters of the Third Kind");
+		Movie close = new Movie("Close Encounters of the Third Kind", "A 1977 American science fiction film.");
 		movieDao.createMovie(close);
 		Actor ric = new Actor("Richard", "Dreyfus");
 		actorDao.createActor(ric);

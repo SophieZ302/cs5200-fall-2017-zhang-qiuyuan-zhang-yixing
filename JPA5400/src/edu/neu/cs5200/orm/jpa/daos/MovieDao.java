@@ -88,7 +88,7 @@ public class MovieDao extends BaseDao {
 		oldMovie.setTitle(newMovie.getTitle());
 		oldMovie.setActors(newMovie.getActors());
 		oldMovie.setDirectors(newMovie.getDirectors());
-
+		oldMovie.setDescription(newMovie.getDescription());
 //		em.persist(oldMovie);
 		try {
 			em.getTransaction().commit();

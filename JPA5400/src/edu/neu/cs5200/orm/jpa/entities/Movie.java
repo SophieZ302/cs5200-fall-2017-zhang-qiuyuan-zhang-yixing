@@ -21,6 +21,7 @@ public class Movie implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String title;
+	private String description;
 
 	@ManyToOne
 	private MovieLibrary library;
@@ -42,7 +43,13 @@ public class Movie implements Serializable {
 		super();
 		this.title = title;
 	}
-	
+
+	public Movie(String title, String description) {
+		super();
+		this.title = title;
+		this.description = description;
+	}
+
 	public double getCritiqueRate() {
 		double sum = 0;
 		int count = 0;
@@ -58,7 +65,7 @@ public class Movie implements Serializable {
 			return sum / count;
 		}
 	}
-	
+
 	public double getRegularRate() {
 		double sum = 0;
 		int count = 0;
@@ -74,7 +81,7 @@ public class Movie implements Serializable {
 			return sum / count;
 		}
 	}
-	
+
 	public double getRate() {
 		double sum = 0;
 		int count = 0;
@@ -87,6 +94,22 @@ public class Movie implements Serializable {
 		} else {
 			return sum / count;
 		}
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public MovieLibrary getLibrary() {
+		return library;
+	}
+
+	public void setLibrary(MovieLibrary library) {
+		this.library = library;
 	}
 
 	@XmlTransient
