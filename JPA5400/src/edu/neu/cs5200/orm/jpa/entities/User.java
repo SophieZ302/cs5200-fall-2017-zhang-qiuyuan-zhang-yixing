@@ -26,6 +26,13 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();
 
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "USER2USER")
+	private List<User> likeList = new ArrayList<>();
+	
+	@ManyToMany(mappedBy = "likeList", cascade = CascadeType.ALL)
+	private List<User> likedBy = new ArrayList<>();
+
 	public User() {
 		super();
 	}
@@ -35,6 +42,24 @@ public class User implements Serializable {
 		this.username = username;
 		this.password = password;
 		this.email = email;
+	}
+	
+	
+
+	public List<User> getLikeList() {
+		return likeList;
+	}
+
+	public void setLikeList(List<User> likeList) {
+		this.likeList = likeList;
+	}
+
+	public List<User> getLikedBy() {
+		return likedBy;
+	}
+
+	public void setLikedBy(List<User> likedBy) {
+		this.likedBy = likedBy;
 	}
 
 	@XmlTransient
