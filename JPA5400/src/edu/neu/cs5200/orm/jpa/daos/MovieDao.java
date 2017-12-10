@@ -12,6 +12,7 @@ import edu.neu.cs5200.orm.jpa.entities.Comment;
 import edu.neu.cs5200.orm.jpa.entities.Director;
 import edu.neu.cs5200.orm.jpa.entities.Movie;
 import edu.neu.cs5200.orm.jpa.entities.Producer;
+import edu.neu.cs5200.orm.jpa.entities.User;
 
 public class MovieDao extends BaseDao {
 	public MovieDao() {
@@ -155,6 +156,25 @@ public class MovieDao extends BaseDao {
 			em.close();
 		}
 	}
+	
+	public List<Movie> getMoviesByProducer(Producer producer) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Query query = em.createQuery("select m from Movie m where m.producer =:producer ", Comment.class)
+				.setParameter("producer", producer);
+		List<Movie> movies = query.getResultList();
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return movies;
+	}
+	
 	
 
 	public static void test() {
