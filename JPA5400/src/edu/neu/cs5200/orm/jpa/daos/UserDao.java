@@ -82,13 +82,128 @@ public class UserDao extends BaseDao {
 		}
 	}
 	
+	public int createUser(User user) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		em.persist(user);
+		em.flush();
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return user.getId();
+	}
+
+	public User findUserById(int id) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		User user = em.find(User.class, id);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return user;
+	}
+
+	public List<User> findAllUser() {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Query query = em.createQuery("select u from User u", User.class);
+		List<User> users = query.getResultList();
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return users;
+	}
+
+	public void updateUser(int id, User newUser) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		User old = em.find(User.class, id);
+		old.setUsername(newUser.getUsername());
+		old.setPassword(newUser.getPassword());
+		old.setEmail(newUser.getEmail());
+		em.merge(old);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+	}
+
+	public void deleteAllUsers() {
+		List<User> list = findAllUser();
+		for (User user : list) {
+			deleteUser(user.getId());
+		}
+	}
+
+	public void deleteUser(int id) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		em.remove(em.find(User.class, id));
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
+	public boolean isLike(int id1, int id2) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		boolean res = false;
+		User u1 = em.find(User.class, id1);
+		User u2 = em.find(User.class, id2);
+		if (u1.getLikeList().contains(u2)) {
+			res = true;
+		}
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return res;
+	}
+	
+	
+	
 	public static void main(String[] args) {
 		UserDao dao = new UserDao();
 //		User u = dao.getUserByUserNamePassword("cri1", "pass");
 //		System.out.println(u);
 		
 //		dao.like(1, 2);
-		dao.disLike(1, 2);
+		System.out.println(dao.isLike(2, 4));
+		
 	}
 	
 }

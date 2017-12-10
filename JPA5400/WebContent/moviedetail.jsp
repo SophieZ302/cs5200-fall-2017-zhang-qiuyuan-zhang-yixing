@@ -77,7 +77,7 @@
 			}
 		%>
 		<br> <br>
-		<!-- finsh header -->
+		<!-- finish header -->
 
 
 
