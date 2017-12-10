@@ -29,7 +29,7 @@
 					response.sendRedirect("index.jsp");
 				} else {
 					%>
-					<div class="alert alert-warning">
+					<div class="alert alert-danger">
 					<strong>Warning!</strong> user name and password combination not found
 					</div>
 					<%

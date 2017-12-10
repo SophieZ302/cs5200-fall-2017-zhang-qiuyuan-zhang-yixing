@@ -22,13 +22,166 @@
 		MovieDao mdao = new MovieDao();
 		Movie movie = mdao.findMovieById(Integer.parseInt(movieId));
 	%>
-	<div class = "container">
-		<h1>Movie: <%=movie.getTitle()%></h1>
-		<p>Review: </p>
-		<p>Director: </p>
-		<p>Actors: </p>
-		
-		
+	<div class="container">
+		<%
+			User user = (User) session.getAttribute("user");
+			if (user == null) {
+			%><div class="alert alert-danger">
+				<strong>Warning!</strong> Must login to leave a comment
+			</div>
+			<%
+			}
+		%>
+		<!-- Handles login/logout, and search -->
+		<%
+			String action = request.getParameter("logout_action");
+			if ("logout".equals(action)) {
+				session.setAttribute("user", null);
+			}
+
+			String action2 = request.getParameter("action");
+			if ("comment".equals(action2)) {
+				if (session.getAttribute("user") != null) {
+					CommentDao cd = new CommentDao();
+					String comment = request.getParameter("comment");
+					int rate = Integer.valueOf(request.getParameter("rating"));
+					Comment c = new Comment(comment, rate);
+					cd.createComment(c, user.getId(), Integer.valueOf(movieId));
+					response.sendRedirect("moviedetail.jsp?movieId" + movieId);
+				}
+			}
+		%>
+		<%
+			if (user == null) {
+		%>
+		<h2>
+			<a class="btn btn-success float-right" href="login.jsp">LogIn</a>
+		</h2>
+		<%
+			} else {
+		%>
+		<h2>
+			<form action="index.jsp">
+				<button type="submit" name="logout_action" value="logout"
+					class="btn btn-secondary float-right">Logout</button>
+			</form>
+		</h2>
+		<p class="float-left">
+			Welcome
+			<%=user.getUsername()%>
+			<a href="userdetail.jsp">[profile]</a>
+		</p>
+		<form method="post" action="index.jsp"></form>
+		<%
+			}
+		%>
+		<br> <br>
+		<!-- finsh header -->
+
+
+
+
+		<h1><%=movie.getTitle()%></h1>
+		<p>Info:</p>
+
+		<table class="table table-striped">
+			<tr>
+				<th scope="row">Popular Rating</th>
+				<td>
+					<%
+						double pr1 = movie.getRegularRate();
+					%> <%=pr1%> / 5
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row">Professional Rating</th>
+				<td>
+					<%
+						double pr = movie.getRegularRate();
+					%> <%=pr%> / 5
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row">Directors</th>
+				<td>
+					<%
+						List<Director> directors = movie.getDirectors();
+						for (Director i : directors) {
+							String firstName = i.getFirstName();
+							String lastName = i.getLastName();
+							String name = firstName + " " + lastName + "; ";
+					%><%=name%> <%
+ 	}
+ %>
+				</td>
+			</tr>
+			<tr>
+				<th scope="row">Actors</th>
+				<td>
+					<%
+						List<Actor> actors = movie.getActors();
+						for (Actor i : actors) {
+							String firstName = i.getFirstName();
+							String lastName = i.getLastName();
+							String name = firstName + " " + lastName + "; ";
+					%><%=name%> <%
+ 	}
+ %>
+				</td>
+			</tr>
+		</table>
+
+		<br> <br>
+
+		<p>all comments:</p>
+
+		<form action="moviedetail.jsp">
+			<input name=movieId type="hidden" value=<%=movieId%>> <input
+				name="comment" class="form-control"
+				placeholder="must login to comment"> <select
+				class="custom-select mb-2 mr-sm-2 mb-sm-0" name="rating"
+				id="inlineFormCustomSelect">
+				<option selected>choose rating</option>
+				<option value="1">1/5</option>
+				<option value="2">2/5</option>
+				<option value="3" selected="selected">3/5</option>
+				<option value="4">4/5</option>
+				<option value="5">5/5</option>
+			</select>
+			<button class="btn btn-primary float-right" type="submit"
+				action="comment" value="comment">add a comment</button>
+		</form>
+
+
+		<br> <br> <br>
+		<table class="table-striped" style="width: 100%; height: 100%;">
+
+			<%
+				List<Comment> comments = movie.getComments();
+				for (Comment c : comments) {
+					User u = c.getUser();
+					String userName = u.getUsername();
+					String content = c.getContent();
+					int rating = c.getRate();
+					String rated = "    rated: " + rating + "/5";
+			%>
+			<tr>
+				<td>user: <a href="visitPerson.jsp?id=<%=u.getId()%>"><%=userName%></a></td>
+				<td><%=rated%></td>
+			</tr>
+
+			<tr>
+				<td><%=content%><br> <br></td>
+				<td><br> <br></td>
+			</tr>
+			<%
+				}
+			%>
+		</table>
+
+
 	</div>
 
 </body>
