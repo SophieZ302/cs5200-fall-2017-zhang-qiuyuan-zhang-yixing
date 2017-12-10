@@ -45,20 +45,33 @@
 			 		<%	
 			 	} 
 			%>
+			
+			<%
+				List<Movie> movies = null;
+				String action2 = request.getParameter("search_action");
+				if (action2!= null && action2.equals("search")) {
+					String txt = request.getParameter("searchtxt");
+					MovieDao md = new MovieDao();
+					movies = md.getMoviesWithName(txt);
+				}
+			%>
+			
 		<br>
 		<br>
+		
+		<form action="index.jsp">
 		<div class="input-group">
-			<input type="text" class="form-control"
-				placeholder="Search for movies..."> <span
-				class="input-group-btn">
-				<button class="btn btn-secondary" type="searchBtn">Go!</button>
-			</span>
+			<input name="searchtxt"  type="text" class="form-control" placeholder="Search for movies..."> 
+			<button name ="search_action" value = "search" class="btn btn-secondary" type="searchBtn" >Go!</button>
 		</div>
+		</form>
 		<!-- /input-group -->
 		
 		<%
 			MovieDao dao = new MovieDao();
-			List<Movie> movies = dao.findAllMovie();
+			if (movies == null) {
+				movies = dao.findAllMovie();
+			}
 		%>
 		<br>
 		<br>

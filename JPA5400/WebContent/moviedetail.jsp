@@ -113,7 +113,7 @@
 							String firstName = i.getFirstName();
 							String lastName = i.getLastName();
 							String name = firstName + " " + lastName + "; ";
-					%><%=name%> <%
+					%><a href= "directordetail.jsp?directorId=<%=i.getId() %>"><%=name%></a> <%
  	}
  %>
 				</td>
@@ -127,7 +127,7 @@
 							String firstName = i.getFirstName();
 							String lastName = i.getLastName();
 							String name = firstName + " " + lastName + "; ";
-					%><%=name%> <%
+					%><a href= "actordetail.jsp?actorId=<%=i.getId() %>"><%=name%></a> <%
  	}
  %>
 				</td>
