@@ -18,65 +18,28 @@
 
 <body>
 	<div class="container">
-		<br>	
-			 <%
-			 	String action = request.getParameter("logout_action");
-			 	if ("logout".equals(action)){
-			 		session.setAttribute("user", null);
-			 	}
-			%>
-			<%
-			 	User user = (User) session.getAttribute("user");
-			 	if (user == null) {
-			 %>		<h2>Home Page  
-			 		<a class="btn btn-success float-right" href="login.jsp">LogIn</a>
-			 		</h2>
-			 <% 
-			 	} else {
-			 		%>
-			 		<h2>Home Page
-			 			<form action="index.jsp">
-			 			<button type="submit" name = "logout_action" value = "logout" class = "btn btn-secondary float-right">Logout</button>
-			 			</form>
-			 		</h2>
-			 		<p class = "float-left"> Welcome <%=user.getUsername()%>  <a href = "profile.jsp">[profile]</a></p>			 		
-			 		<form method="post" action="index.jsp">   
-			 		</form>
-			 		<%	
-			 	} 
-			%>
-			
-			<%
-				List<Movie> movies = null;
-				String action2 = request.getParameter("search_action");
-				if (action2!= null && action2.equals("search")) {
-					String txt = request.getParameter("searchtxt");
-					MovieDao md = new MovieDao();
-					movies = md.getMoviesWithName(txt);
-				}
-			%>
-			
 		<br>
-		<br>
-		
+
+
 		<%
+			User user = (User) session.getAttribute("user");
 			String action = request.getParameter("logout_action");
 			if ("logout".equals(action)) {
 				session.setAttribute("user", null);
 			}
 		%>
 		<%
-			User user = (User) session.getAttribute("user");
 			if (user == null) {
 		%>
 		<h2>
-			<a href = "index.jsp">Home Page</a> <a class="btn btn-success float-right" href="login.jsp">LogIn</a>
+			<a href="index.jsp">Home Page</a> <a
+				class="btn btn-success float-right" href="login.jsp">LogIn</a>
 		</h2>
 		<%
 			} else {
 		%>
 		<h2>
-			<a href = "index.jsp">Home Page</a>
+			<a href="index.jsp">Home Page</a>
 			<form action="index.jsp">
 				<button type="submit" name="logout_action" value="logout"
 					class="btn btn-secondary float-right">Logout</button>
@@ -114,7 +77,7 @@
 			}
 		%>
 
-		<br> <br>
+		<br> <br> <br> <br>
 
 		<form action="index.jsp">
 			<div class="input-group">
@@ -125,14 +88,20 @@
 			</div>
 		</form>
 		<!-- /input-group -->
-		
+
 		<%
-			if(isSearch){
+			if (isSearch) {
 				JsonWebServiceClient cl = new JsonWebServiceClient();
 				ApiMovieData movieApiData = cl.fetchData(txt);
+				if (movieApiData == null) {
+				%><div class="alert alert-warning" role="alert">
+					<strong>Warning!</strong> Movie not found, please use correct name
+					</div>
+				<%
+				} else {
 		%>
-		<br><br>
-		<h3>Movie From OMDB API</h3>
+		<br> <br>
+		<h3>Movie From IMDB API</h3>
 		<br>
 		<table class="table table-striped">
 			<tr>
@@ -141,14 +110,18 @@
 				<td>Rating</td>
 			</tr>
 			<tr>
-				<td><a href="apimoviedetail.jsp?movieId=
+				<td><a
+					href="apimoviedetail.jsp?movieId=
 				<%=movieApiData.getId()%>"><%=movieApiData.getTitle()%></a></td>
 				<td><%=movieApiData.getPlot()%></td>
 				<td><%=movieApiData.getRating()%></td>
 			</tr>
 		</table>
-		<% } %>
- 		
+		<%
+				}
+			}
+		%>
+
 
 		<%
 			MovieDao dao = new MovieDao();
@@ -156,8 +129,10 @@
 				movies = dao.findAllMovie();
 			}
 		%>
-		<br><br>
-		<% if (movies!= null && movies.size()!= 0) { %>
+		<br> <br>
+		<%
+			if (movies != null && movies.size() != 0) {
+		%>
 		<h3>All Movies From Database</h3>
 		<table class="table table-striped">
 			<tr>
@@ -179,13 +154,13 @@
 			%>
 		</table>
 
-		<% }
+		<%
+			}
 			if (isSearch) {
 		%>
-		<br>
-		<br>
+		<br> <br>
 		<%
-			if (actors != null && actors.size()!= 0) {
+			if (actors != null && actors.size() != 0) {
 		%>
 		<h4>All Actors</h4>
 		<table class="table table-striped">
@@ -200,8 +175,7 @@
 				}
 			%>
 		</table>
-		<br>
-		<br>
+		<br> <br>
 		<%
 			}
 		%>
@@ -223,7 +197,7 @@
 		</table>
 		<%
 			}
-		}
+			}
 		%>
 	</div>
 </body>

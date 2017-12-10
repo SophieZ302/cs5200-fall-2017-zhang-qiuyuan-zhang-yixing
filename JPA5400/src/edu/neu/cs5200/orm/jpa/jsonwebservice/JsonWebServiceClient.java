@@ -41,6 +41,11 @@ public class JsonWebServiceClient {
 			JSONParser parser = new JSONParser();
 			JSONObject root = (JSONObject) parser.parse(json);
 			
+			if (root.get("Error") != null) {
+				System.out.println("not found");
+				return null;
+			}
+			
 			movie.setId((String)root.get("imdbID"));
 			movie.setTitle((String)root.get("Title"));
 			movie.setPlot((String)root.get("Plot"));
@@ -48,8 +53,13 @@ public class JsonWebServiceClient {
 			movie.setDirectors((String)root.get("Director"));
 			movie.setImageUrl((String)root.get("Poster"));
 			String rating = (String) root.get("imdbRating");
-			movie.setRating(Double.valueOf(rating));
-			
+			if (rating!= null) {
+				try {
+					movie.setRating(Double.valueOf(rating));
+				} catch (NumberFormatException e){
+					movie.setRating(10.00);
+				}
+			}
 			//System.out.println(movie.toString());
 			
 
@@ -84,10 +94,17 @@ public class JsonWebServiceClient {
 				json +=line;
 			}
 			
-			//System.out.println(json);
+			System.out.println(json);
 			
+			
+						
 			JSONParser parser = new JSONParser();
 			JSONObject root = (JSONObject) parser.parse(json);
+			
+			if (root.get("Error") != null) {
+				System.out.println("not found");
+				return null;
+			}
 			
 			movie.setId((String)root.get("imdbID"));
 			movie.setTitle((String)root.get("Title"));
@@ -96,8 +113,13 @@ public class JsonWebServiceClient {
 			movie.setDirectors((String)root.get("Director"));
 			movie.setImageUrl((String)root.get("Poster"));
 			String rating = (String) root.get("imdbRating");
-			movie.setRating(Double.valueOf(rating));
-			
+			if (rating != null) {
+				try {
+					movie.setRating(Double.valueOf(rating));
+				} catch (NumberFormatException e){
+					movie.setRating(10.00);
+				}
+			}
 			//System.out.println(movie.toString());
 			
 		} catch (MalformedURLException e) {
