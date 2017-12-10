@@ -19,8 +19,6 @@
 <body>
 	<div class="container">
 		<br>
-
-
 		<%
 			User user = (User) session.getAttribute("user");
 			String action = request.getParameter("logout_action");
@@ -97,7 +95,7 @@
 				%><div class="alert alert-warning" role="alert">
 					<strong>Warning!</strong> Movie not found, please use correct name
 					</div>
-				<%
+		<%
 				} else {
 		%>
 		<br> <br>
@@ -118,7 +116,7 @@
 			</tr>
 		</table>
 		<%
-				}
+			}
 			}
 		%>
 

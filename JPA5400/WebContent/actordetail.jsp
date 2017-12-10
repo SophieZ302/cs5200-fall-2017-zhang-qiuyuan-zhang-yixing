@@ -35,6 +35,7 @@
 			String action = request.getParameter("logout_action");
 			if ("logout".equals(action)) {
 				session.setAttribute("user", null);
+				response.sendRedirect("index.jsp");
 			}
 		%>
 		<%
@@ -47,7 +48,7 @@
 			} else {
 		%>
 		<h2>
-			<form action="index.jsp">
+			<form action="actordetail.jsp">
 				<button type="submit" name="logout_action" value="logout"
 					class="btn btn-secondary float-right">Logout</button>
 			</form>

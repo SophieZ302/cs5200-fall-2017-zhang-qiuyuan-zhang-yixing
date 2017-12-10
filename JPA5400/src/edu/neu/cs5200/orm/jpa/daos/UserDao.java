@@ -15,6 +15,29 @@ public class UserDao extends BaseDao {
 	public UserDao() {
 		super();
 	}
+	public List<User> findUserByName(String userName) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+	
+		Query query = em.createQuery(
+				"select a from User a "
+				+ "where a.username =:name ", User.class).setParameter("name", userName);
+		List<User> list =  query.getResultList();
+		if (list.size() == 0) {
+			return null;
+		} 
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return list;
+	}
+	
 	public User getUserByUserNamePassword(String userName, String passWord) {
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -222,6 +245,7 @@ public class UserDao extends BaseDao {
 //		dao.like(1, 2);
 		System.out.println(dao.isLike(2, 4));
 		
+		System.out.println(dao.findUserByName("admin").get(0).toString());
 	}
 	
 }
