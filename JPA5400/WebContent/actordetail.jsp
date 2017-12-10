@@ -24,6 +24,9 @@
 		String actorname = actor.getFirstName() + " " + actor.getLastName();
 	%>
 	<div class="container">
+		<h1>
+			<a href="index.jsp">Home Page</a>
+		</h1>
 		<%
 			User user = (User) session.getAttribute("user");
 		%>
@@ -61,9 +64,10 @@
 		<br> <br>
 		<!-- finish header -->
 
-		<h1><%= actorname %></h1>
-		
-		<br><br>
+		<h2>Actor: <%=actorname%></h2>
+
+		<br>
+		<br>
 		<h3>All Movies</h3>
 		<table class="table table-striped">
 			<tr>
@@ -71,15 +75,15 @@
 				<td>Professional Rating</td>
 				<td>Popular Rating</td>
 			</tr>
-			<%	
+			<%
 				List<Movie> movies = actor.getMovies();
 				for (Movie movie : movies) {
 			%>
 			<tr>
-				<td><a href ="moviedetail.jsp?movieId=
+				<td><a href="moviedetail.jsp?movieId=
 				<%=movie.getId()%>">
-				
-				<%=movie.getTitle()%></a></td>
+
+						<%=movie.getTitle()%></a></td>
 				<td><%=movie.getCritiqueRate()%></td>
 				<td><%=movie.getRegularRate()%></td>
 			</tr>

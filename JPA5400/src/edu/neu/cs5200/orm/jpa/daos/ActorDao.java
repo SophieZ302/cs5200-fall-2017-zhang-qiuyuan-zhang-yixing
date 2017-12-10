@@ -1,5 +1,6 @@
 package edu.neu.cs5200.orm.jpa.daos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 import edu.neu.cs5200.orm.jpa.entities.Actor;
+import edu.neu.cs5200.orm.jpa.entities.Movie;
 
 public class ActorDao extends BaseDao {
 	public ActorDao() {
@@ -147,6 +149,20 @@ public class ActorDao extends BaseDao {
 		}
 	}
 
+	public List<Actor> getActorsWithName(String name) {
+		List<Actor> actors = findAllActor();
+		List<Actor> res = new ArrayList<>();
+		for (Actor a : actors) {
+			if (a.getFirstName().toLowerCase().contains(name.toLowerCase())) {
+				res.add(a);
+			} else if (a.getLastName().toLowerCase().contains(name.toLowerCase())) {
+				res.add(a);
+			}
+		}
+		return res;
+	}
+	
+	
 	/*
 	 * Remove all actors. Deletes should cascade to all related records Create the
 	 * following 3 actors: Sigorney Weaver, Dan Creg and Jim Carrey Retrieve the
@@ -200,6 +216,11 @@ public class ActorDao extends BaseDao {
 	}
 
 	public static void main(String[] arg) {
-		test();
+		//test();
+		
+		ActorDao ad = new ActorDao();
+		for (Actor a : ad.getActorsWithName("craig")) {
+			System.out.println(a.getFirstName());
+		}
 	}
 }

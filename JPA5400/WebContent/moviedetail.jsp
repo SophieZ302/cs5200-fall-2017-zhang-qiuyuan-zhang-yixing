@@ -23,15 +23,21 @@
 		Movie movie = mdao.findMovieById(Integer.parseInt(movieId));
 	%>
 	<div class="container">
+
 		<%
 			User user = (User) session.getAttribute("user");
 			if (user == null) {
-			%><div class="alert alert-danger">
-				<strong>Warning!</strong> Must login to leave a comment
-			</div>
-			<%
+		%><div class="alert alert-danger">
+			<strong>Warning!</strong> Must login to leave a comment
+		</div>
+		<%
 			}
 		%>
+		<h1>
+			<a href="index.jsp">Home Page</a>
+		</h1>
+
+
 		<!-- Handles login/logout, and search -->
 		<%
 			String action = request.getParameter("logout_action");
@@ -40,12 +46,12 @@
 			}
 
 			String action2 = request.getParameter("comment_action");
-		
+
 			if ("comment".equals(action2)) {
 				if (user != null) {
 					CommentDao cd = new CommentDao();
 					String comment = request.getParameter("comment");
-					int rate = Integer.valueOf(request.getParameter("rating"));					
+					int rate = Integer.valueOf(request.getParameter("rating"));
 					Comment c = new Comment(comment, rate);
 					cd.createComment(c, user.getId(), Integer.valueOf(movieId));
 					response.sendRedirect("moviedetail.jsp?movieId=" + movieId);
@@ -79,10 +85,7 @@
 		<br> <br>
 		<!-- finish header -->
 
-
-
-
-		<h1><%=movie.getTitle()%></h1>
+		<h2><%=movie.getTitle()%></h2>
 		<p>Info:</p>
 
 		<table class="table table-striped">
@@ -113,9 +116,10 @@
 							String firstName = i.getFirstName();
 							String lastName = i.getLastName();
 							String name = firstName + " " + lastName + "; ";
-					%><a href= "directordetail.jsp?directorId=<%=i.getId() %>"><%=name%></a> <%
- 	}
- %>
+					%><a href="directordetail.jsp?directorId=<%=i.getId()%>"><%=name%></a>
+					<%
+						}
+					%>
 				</td>
 			</tr>
 			<tr>
@@ -127,17 +131,15 @@
 							String firstName = i.getFirstName();
 							String lastName = i.getLastName();
 							String name = firstName + " " + lastName + "; ";
-					%><a href= "actordetail.jsp?actorId=<%=i.getId() %>"><%=name%></a> <%
+					%><a href="actordetail.jsp?actorId=<%=i.getId()%>"><%=name%></a> <%
  	}
  %>
 				</td>
 			</tr>
-			
+
 			<tr>
 				<th scope="row">Description</th>
-				<td>
-					<%=movie.getDescription()%>
-				</td>
+				<td><%=movie.getDescription()%></td>
 			</tr>
 		</table>
 
@@ -146,8 +148,7 @@
 		<p>add a comment:</p>
 
 		<form action="moviedetail.jsp">
-			<input name=movieId type="hidden" value=<%=movieId%>> 
-			<input
+			<input name=movieId type="hidden" value=<%=movieId%>> <input
 				name="comment" class="form-control"
 				placeholder="must login to comment"> <select
 				class="custom-select mb-2 mr-sm-2 mb-sm-0" name="rating"
@@ -160,20 +161,20 @@
 				<option value="4">4/5</option>
 				<option value="5">5/5</option>
 			</select>
-			<button type="submit" class="btn btn-primary float-right" 
+			<button type="submit" class="btn btn-primary float-right"
 				name="comment_action" value="comment">add a comment</button>
 		</form>
 
 
 		<br> <br> <br>
-		<p> all comments: 
+		<p>all comments:
 		<table class="table-striped" style="width: 100%; height: 100%;">
 
 			<%
 				CommentDao cd = new CommentDao();
 				List<Comment> comments = cd.getCommentsbyMovieId(movie);
 				//List<Comment> comments = movie.getComments();
-			
+
 				for (Comment c : comments) {
 					User u = c.getUser();
 					String userName = u.getUsername();
