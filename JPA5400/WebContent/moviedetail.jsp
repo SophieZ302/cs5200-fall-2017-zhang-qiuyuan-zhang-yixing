@@ -39,15 +39,16 @@
 				session.setAttribute("user", null);
 			}
 
-			String action2 = request.getParameter("action");
+			String action2 = request.getParameter("comment_action");
+		
 			if ("comment".equals(action2)) {
-				if (session.getAttribute("user") != null) {
+				if (user != null) {
 					CommentDao cd = new CommentDao();
 					String comment = request.getParameter("comment");
-					int rate = Integer.valueOf(request.getParameter("rating"));
+					int rate = Integer.valueOf(request.getParameter("rating"));					
 					Comment c = new Comment(comment, rate);
 					cd.createComment(c, user.getId(), Integer.valueOf(movieId));
-					response.sendRedirect("moviedetail.jsp?movieId" + movieId);
+					response.sendRedirect("moviedetail.jsp?movieId=" + movieId);
 				}
 			}
 		%>
@@ -131,35 +132,48 @@
  %>
 				</td>
 			</tr>
+			
+			<tr>
+				<th scope="row">Description</th>
+				<td>
+					<%=movie.getDescription()%>
+				</td>
+			</tr>
 		</table>
 
 		<br> <br>
 
-		<p>all comments:</p>
+		<p>add a comment:</p>
 
 		<form action="moviedetail.jsp">
-			<input name=movieId type="hidden" value=<%=movieId%>> <input
+			<input name=movieId type="hidden" value=<%=movieId%>> 
+			<input
 				name="comment" class="form-control"
 				placeholder="must login to comment"> <select
 				class="custom-select mb-2 mr-sm-2 mb-sm-0" name="rating"
 				id="inlineFormCustomSelect">
 				<option selected>choose rating</option>
+				<option value="0">0/5</option>
 				<option value="1">1/5</option>
 				<option value="2">2/5</option>
 				<option value="3" selected="selected">3/5</option>
 				<option value="4">4/5</option>
 				<option value="5">5/5</option>
 			</select>
-			<button class="btn btn-primary float-right" type="submit"
-				action="comment" value="comment">add a comment</button>
+			<button type="submit" class="btn btn-primary float-right" 
+				name="comment_action" value="comment">add a comment</button>
 		</form>
 
 
 		<br> <br> <br>
+		<p> all comments: 
 		<table class="table-striped" style="width: 100%; height: 100%;">
 
 			<%
-				List<Comment> comments = movie.getComments();
+				CommentDao cd = new CommentDao();
+				List<Comment> comments = cd.getCommentsbyMovieId(movie);
+				//List<Comment> comments = movie.getComments();
+			
 				for (Comment c : comments) {
 					User u = c.getUser();
 					String userName = u.getUsername();
