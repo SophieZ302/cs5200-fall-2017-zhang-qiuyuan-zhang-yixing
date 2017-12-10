@@ -39,7 +39,7 @@
 			 			<button type="submit" name = "logout_action" value = "logout" class = "btn btn-secondary float-right">Logout</button>
 			 			</form>
 			 		</h2>
-			 		<p class = "float-left"> Welcome <%=user.getUsername()%>  <a href = "otherUser.jsp">[profile]</a></p>			 		
+			 		<p class = "float-left"> Welcome <%=user.getUsername()%>  <a href = "profile.jsp">[profile]</a></p>			 		
 			 		<form method="post" action="index.jsp">   
 			 		</form>
 			 		<%	

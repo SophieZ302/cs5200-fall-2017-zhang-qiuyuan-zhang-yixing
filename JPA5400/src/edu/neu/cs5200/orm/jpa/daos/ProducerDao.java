@@ -7,6 +7,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
+import edu.neu.cs5200.orm.jpa.entities.Movie;
 import edu.neu.cs5200.orm.jpa.entities.Producer;
 
 public class ProducerDao extends UserDao {
@@ -30,6 +31,25 @@ public class ProducerDao extends UserDao {
 			em.close();
 		}
 		return producer.getId();
+	}
+	
+	public void produces(int pid, int mid) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Producer producer = em.find(Producer.class, pid);
+		Movie movie = em.find(Movie.class, mid);
+		movie.setProducer(producer);
+		producer.getMovies().add(movie);
+		em.merge(producer);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
 	}
 	
 	public Producer findProducerById(int id) {

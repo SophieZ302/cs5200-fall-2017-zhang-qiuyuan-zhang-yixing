@@ -7,6 +7,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
+import edu.neu.cs5200.orm.jpa.entities.Comment;
 import edu.neu.cs5200.orm.jpa.entities.Movie;
 import edu.neu.cs5200.orm.jpa.entities.User;
 
@@ -192,6 +193,23 @@ public class UserDao extends BaseDao {
 			em.close();
 		}
 		return res;
+	}
+	
+	public List<Comment> getCommentsByUserId(int id) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		User user = em.find(User.class, id);
+		List<Comment> comments = user.getComments();
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return comments;
 	}
 	
 	

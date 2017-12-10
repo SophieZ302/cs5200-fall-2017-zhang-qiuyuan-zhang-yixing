@@ -26,6 +26,9 @@ public class Movie implements Serializable {
 	@ManyToOne
 	private MovieLibrary library;
 
+	@ManyToOne
+	private Producer producer;
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "MOVIE2ACTOR")
 	private List<Actor> actors = null;
@@ -42,6 +45,14 @@ public class Movie implements Serializable {
 	public Movie(String title) {
 		super();
 		this.title = title;
+	}
+
+	public Producer getProducer() {
+		return producer;
+	}
+
+	public void setProducer(Producer producer) {
+		this.producer = producer;
 	}
 
 	public Movie(String title, String description) {

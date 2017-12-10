@@ -129,6 +129,23 @@ public class CommentDao extends BaseDao {
 		return comments;
 	}
 	
+	public List<Comment> getCommentsbyUser(User user) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Query query = em.createQuery("select c from Comment c where c.user =:user ", Comment.class).setParameter("user", user);
+		List<Comment> comments = query.getResultList();
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return comments;
+	}
+	
 	public static void main(String[] args) {
 		CommentDao dao = new CommentDao();
 		Comment c1 = new Comment("good", 4);

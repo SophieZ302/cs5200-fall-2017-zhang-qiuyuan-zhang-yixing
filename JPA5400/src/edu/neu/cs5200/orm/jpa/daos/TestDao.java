@@ -93,6 +93,11 @@ public class TestDao {
 		commentDao.createComment(excellent, charlie.getId(), blade.getId());
 		commentDao.createComment(good, charlie.getId(), raiders.getId());
 		commentDao.createComment(bad, charlie.getId(), close.getId());
+		
+		// g. produce movies.
+		producerDao.produces(charlie.getId(), blade.getId());
+		producerDao.produces(charlie.getId(), raiders.getId());
+		producerDao.produces(charlie.getId(), close.getId());
 	}
 
 	public static void main(String[] args) {
