@@ -40,7 +40,53 @@
 		<p>welcome to admin page</p>
 		<br> <br>
 
-		<!-- Handels search users -->
+		<!-- Handles create user -->
+		<%
+			String createAction = request.getParameter("operation");
+			if ("createUser".equals(createAction)) {
+				String newname = request.getParameter("username");
+				String newemail = request.getParameter("email");
+				String role = request.getParameter("type");
+				if (role.equals("1")) {
+					Regular person = new Regular(newname, "", newemail);
+					RegularDao rdao = new RegularDao();
+					rdao.createRegular(person);
+					session.setAttribute("user", person);
+				} else if (role.equals("2")) {
+					Critique person = new Critique(newname, "", newemail);
+					CritiqueDao dao = new CritiqueDao();
+					dao.createCritique(person);
+					session.setAttribute("user", person);
+				} else if (role.equals("3")) {
+					Producer person = new Producer(newname, "", newemail);
+					ProducerDao dao = new ProducerDao();
+					dao.createProducer(person);
+				}
+				response.sendRedirect("admindetail.jsp");
+				System.out.println("created user");
+			}
+		%>
+
+		<!-- Handles create movie -->
+		<%
+			String actioncreate = request.getParameter("createMovieAction");
+		
+			if ("createMovie".equals(actioncreate)) {
+				String title = request.getParameter("title");
+				String description = request.getParameter("description");
+
+				Movie amovie = new Movie(title, description);
+				if(user instanceof Producer){
+					amovie.setProducer((Producer) user);
+					((Producer) user).getMovies().add(amovie);
+				}
+				MovieDao movieDao = new MovieDao();
+				movieDao.createMovie(amovie);
+			}
+		%>
+
+
+		<!-- Handles search users -->
 		<%
 			String searchAction = request.getParameter("search_action");
 			List<User> userList = null;
@@ -54,7 +100,7 @@
 			}
 
 			if (isSearch && userList == null) {
-		%><div class="alert alert-warning" >
+		%><div class="alert alert-warning">
 			<strong>Warning!</strong> User not found, please use correct name
 		</div>
 		<%
@@ -80,6 +126,24 @@
 				<td>email</td>
 				<td>role</td>
 			</tr>
+
+			<form action="admindetail.jsp">
+				<tr>
+					<td><input name="username" class=form-control
+						placeholder="user name" /></td>
+					<td><input name="email" class=form-control
+						placeholder="123@gmail.com" /></td>
+					<td><select class="custom-select mb-2 mr-sm-2 mb-sm-0"
+						name="type" id="inlineFormCustomSelect">
+							<option value="1" selected>Regular user</option>
+							<option value="2">Professional Critic</option>
+							<option value="3">Producer</option>
+					</select></td>
+					<td><button class="btn btn-primary" type="submit"
+							name="operation" value="createUser">Create</button></td>
+				</tr>
+			</form>
+
 			<%
 				if (userList == null) {
 					userList = udao.findAllUser();
@@ -99,7 +163,7 @@
 					}
 			%>
 			<tr>
-				<td><a href="profile.jsp?<%=person.getId()%>"><%=username%></a></td>
+				<td><a href="profile.jsp?userId=<%=person.getId()%>"><%=username%></a></td>
 				<td><%=email%></td>
 				<td><%=type%></td>
 			</tr>
@@ -107,11 +171,10 @@
 				}
 			%>
 		</table>
-		
+
 
 
 		<!-- List all movies -->
-		<!-- Handels search users -->
 		<%
 			String searchAction2 = request.getParameter("search_action");
 			List<Movie> movieList = null;
@@ -125,7 +188,7 @@
 			}
 
 			if (isSearchMovie && movieList == null) {
-		%><div class="alert alert-warning" >
+		%><div class="alert alert-warning">
 			<strong>Warning!</strong> Movie not found, please use correct name
 		</div>
 		<%
@@ -141,9 +204,9 @@
 					class="btn btn-secondary" type="searchBtn">search</button>
 			</div>
 		</form>
-		
+
 		<!-- List all movies -->
-		<br><br>
+		<br> <br>
 		<h3>All Movies</h3>
 		<br>
 		<table class="table table-striped">
@@ -153,6 +216,17 @@
 				<td>prof rating</td>
 				<td>popular rating</td>
 			</tr>
+
+			<form action="admindetail.jsp">
+				<tr>
+					<td><input name="title" class=form-control placeholder="title" /></td>
+					<td><input name="description" class=form-control
+						placeholder="description" /></td>
+					<td><button class="btn btn-primary" type="submit"
+							name="createMovieAction" value="createMovie">Create</button></td>
+				</tr>
+			</form>
+
 			<%
 				if (movieList == null) {
 					movieList = mdao.findAllMovie();
@@ -160,17 +234,17 @@
 				for (Movie movie : movieList) {
 			%>
 			<tr>
-				<td><a href="editmovie.jsp?<%=movie.getId()%>"><%=movie.getTitle()%></a></td>
-				<td><%=movie.getDescription() %></td>
+				<td><a href="editmovie.jsp?movieId=<%=movie.getId()%>"><%=movie.getTitle()%></a></td>
+				<td><%=movie.getDescription()%></td>
 				<td><%=movie.getCritiqueRate()%></td>
-				<td><%=movie.getRegularRate() %></td>
+				<td><%=movie.getRegularRate()%></td>
 			</tr>
 			<%
 				}
 			%>
 		</table>
-		
-		
+
+
 	</div>
 </body>
 </html>

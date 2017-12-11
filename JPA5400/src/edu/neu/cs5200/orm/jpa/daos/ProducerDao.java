@@ -105,6 +105,24 @@ public class ProducerDao extends UserDao {
 		}
 	}
 	
+	public void updateProducerCompany(int id, String company) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Producer old = em.find(Producer.class, id);
+		old.setCompanyName(company);
+		em.merge(old);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
+	
 	public void deleteAllProducers() {
 		List<Producer> list = findAllProducer();
 		for (Producer producer : list) {

@@ -139,6 +139,19 @@ public class DirectorDao extends BaseDao{
 			em.close();
 		}
 	}
+	public Director getDirectorWithFirstLastName(String first, String last) {
+		Director d = null;
+		List<Director> ds = findAllDirector();
+		List<Director> res = new ArrayList<>();
+		for (Director a : ds) {
+			if (a.getFirstName().equalsIgnoreCase(first) && a.getLastName().equalsIgnoreCase(last)) {
+				d = a;
+			} 
+		}
+
+		return d;
+	}
+	
 	public List<Director> getDirectorWithName(String name) {
 		List<Director> ds = findAllDirector();
 		List<Director> res = new ArrayList<>();

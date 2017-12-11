@@ -84,6 +84,24 @@ public class CritiqueDao extends UserDao {
 			em.close();
 		}
 	}
+	
+	public void updateCritiqueFirstLastName(int id, String first, String last) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Critique old = em.find(Critique.class, id);
+		old.setFirstname(first);
+		old.setLastname(last);
+		em.merge(old);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+	}
 
 	public void deleteAllCritiques() {
 		List<Critique> list = findAllCritique();
