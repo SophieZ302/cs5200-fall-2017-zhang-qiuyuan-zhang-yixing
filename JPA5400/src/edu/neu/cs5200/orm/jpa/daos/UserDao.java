@@ -235,6 +235,23 @@ public class UserDao extends BaseDao {
 		return comments;
 	}
 	
+	public List<User> getLikeList(int id) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		User user = em.find(User.class, id);
+		List<User> likeList = user.getLikeList();
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		return likeList;
+	}
+	
 	
 	
 	public static void main(String[] args) {

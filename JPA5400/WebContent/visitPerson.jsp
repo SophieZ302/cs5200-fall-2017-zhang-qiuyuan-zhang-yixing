@@ -51,7 +51,7 @@
 		<p class="float-left">
 			Welcome
 			<%=user.getUsername()%>
-			<a href="userdetail.jsp">[profile]</a>
+			<a href="profile.jsp">[profile]</a>
 		</p>
 		<form method="post" action="index.jsp"></form>
 		<%
