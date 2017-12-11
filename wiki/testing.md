@@ -2,8 +2,9 @@
 
 * Set up
 	* in persistence.xml, update user, password and database url 
-   * link project with a tomcat server
-   * run on server http://localhost:8080/JPAMOVIES
+    * link project with a tomcat server
+    * user TestDaos.main() to add some initial fields in the database
+    * run on server http://localhost:8080/JPAMOVIES
 
 * Test
 	1. A user related to another user, e.g., a fan follows their favorite cricket player, a manager gives an employee a raise, an airbnb guest leaves a message for their host, etc.

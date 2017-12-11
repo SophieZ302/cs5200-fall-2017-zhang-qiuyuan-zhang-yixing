@@ -29,4 +29,6 @@
    * detailed testing click [here](https://github.com/socrateszhang/MovieReview/wiki/Testing)
    * in persistence.xml, update user, password and database url 
    * link project with a tomcat server
+   * user TestDaos.main() to add some initial fields in the database
    * run on server http://localhost:8080/JPAMOVIES
+
