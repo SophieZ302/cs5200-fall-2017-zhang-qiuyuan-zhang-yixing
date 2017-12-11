@@ -92,18 +92,14 @@
 			<tr>
 				<th scope="row">Popular Rating</th>
 				<td>
-					<%
-						double pr1 = movie.getRegularRate();
-					%> <%=pr1%> / 5
+					 <%=mdao.getRegularRate(movie.getId())%> / 5
 				</td>
 			</tr>
 
 			<tr>
 				<th scope="row">Professional Rating</th>
 				<td>
-					<%
-						double pr = movie.getRegularRate();
-					%> <%=pr%> / 5
+					<%=mdao.getCriticRate(movie.getId())%> / 5
 				</td>
 			</tr>
 
@@ -153,7 +149,7 @@
 				placeholder="must login to comment"> <select
 				class="custom-select mb-2 mr-sm-2 mb-sm-0" name="rating"
 				id="inlineFormCustomSelect">
-				<option selected>choose rating</option>
+				<option selected value = "0">choose rating</option>
 				<option value="0">0/5</option>
 				<option value="1">1/5</option>
 				<option value="2">2/5</option>

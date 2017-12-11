@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 import edu.neu.cs5200.orm.jpa.entities.Actor;
+import edu.neu.cs5200.orm.jpa.entities.Director;
 import edu.neu.cs5200.orm.jpa.entities.Movie;
 
 public class ActorDao extends BaseDao {
@@ -106,6 +107,19 @@ public class ActorDao extends BaseDao {
 		}
 	}
 
+	
+	public Actor getActorWithFirstLastName(String first, String last) {
+		Actor d = null;
+		List<Actor> ds = findAllActor();
+		List<Actor> res = new ArrayList<>();
+		for (Actor a : ds) {
+			if (a.getFirstName().equalsIgnoreCase(first) && a.getLastName().equalsIgnoreCase(last)) {
+				d = a;
+			} 
+		}
+		return d;
+	}
+	
 	public void updateActor(int id , Actor actorNew) {
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction tx = em.getTransaction();

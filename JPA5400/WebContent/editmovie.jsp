@@ -40,12 +40,12 @@
 	</h2>
 	<%
 		} else {
-		String action = request.getParameter("action");
+			String action = request.getParameter("action");
 	%>
 
 	<!-- Handles deleting movie -->
 	<%
-			if ("delete".equals(action)) {
+		if ("delete".equals(action)) {
 				mdao.deleteMovie(movieId);
 				System.out.println("deleted movie " + movieId);
 				response.sendRedirect("editmovie.jsp?movieId=" + movieId);
@@ -54,7 +54,7 @@
 
 	<!-- Handles update movie title, description -->
 	<%
-			if ("update_word".equals(action)) {
+		if ("update_word".equals(action)) {
 				String title = request.getParameter("title");
 				String des = request.getParameter("description");
 				movie.setTitle(title);
@@ -66,12 +66,12 @@
 	%>
 	<!-- Handles add director -->
 	<%
-			if ("add_director".equals(action)) {
+		if ("create_director".equals(action)) {
 				String first = request.getParameter("first");
 				String last = request.getParameter("last");
 				DirectorDao dd = new DirectorDao();
-				Director dir =  dd.getDirectorWithFirstLastName(first, last);
-				if(dir == null) {
+				Director dir = dd.getDirectorWithFirstLastName(first, last);
+				if (dir == null) {
 					dir = new Director(first, last);
 				}
 				mdao.addDirector(movie, dir);
@@ -79,14 +79,55 @@
 				response.sendRedirect("editmovie.jsp?movieId=" + movieId);
 			}
 	%>
-	
-	
+
 	<!-- Handles delete director -->
-	
+	<%
+		if ("delete_director".equals(action)) {
+				String dId = request.getParameter("directorId");
+				System.out.println(dId);
+				DirectorDao dd = new DirectorDao();
+				if (dId != null && dId.length() != 0) {
+					Director director = dd.findDirectorById(Integer.valueOf(dId));
+					mdao.deleteDirector(movie, director);
+					System.out.println("removed director" + dId);
+					response.sendRedirect("editmovie.jsp?movieId=" + movieId);
+				}
+			}
+	%>
+
+
 	<!-- Handles add actor -->
-	
+
+	<%
+		if ("create_actor".equals(action)) {
+				String first = request.getParameter("first");
+				String last = request.getParameter("last");
+				ActorDao ad = new ActorDao();
+				Actor act = ad.getActorWithFirstLastName(first, last);
+				if (act == null) {
+					act = new Actor(first, last);
+				}
+				mdao.addActor(movie, act);
+				System.out.println("added actor" + act.toString());
+				response.sendRedirect("editmovie.jsp?movieId=" + movieId);
+			}
+	%>
+
+
 	<!-- Handles delete actor -->
-	
+	<%
+		if ("delete_actor".equals(action)) {
+				String dId = request.getParameter("actorId");
+				System.out.println(dId);
+				ActorDao dd = new ActorDao();
+				if (dId != null && dId.length() != 0) {
+					Actor actor = dd.findActorById(Integer.valueOf(dId));
+					mdao.deleteActor(movie, actor);
+					System.out.println("removed actor" + dId);
+					response.sendRedirect("editmovie.jsp?movieId=" + movieId);
+				}
+			}
+	%>
 
 	<div class="container">
 
@@ -131,13 +172,13 @@
 
 			<tr>
 				<form action="editmovie.jsp">
-				<input type="hidden" name="movieId" value=<%=movieId%>>
+					<input type="hidden" name="movieId" value=<%=movieId%>>
 				<td><input name="title" class=form-control
 					placeholder="new title" /></td>
 				<td><input name="description" class=form-control
 					placeholder="new description" /></td>
-				<td><button class="btn btn-primary" type="submit"
-						name="action" value="update_word">update</button></td>
+				<td><button class="btn btn-primary" type="submit" name="action"
+						value="update_word">update</button></td>
 				</form>
 			</tr>
 
@@ -151,10 +192,13 @@
 				<td>action</td>
 			</tr>
 			<tr>
+				<form action="editmovie.jsp">
+					<input type="hidden" name="movieId" value=<%=movieId%>>
 				<td><input name="first" class=form-control placeholder="first" /></td>
 				<td><input name="last" class=form-control placeholder="last" /></td>
-				<td><button class="btn btn-primary" type="submit"
-						name="action" value="create_director">Create</button></td>
+				<td><button class="btn btn-primary" type="submit" name="action"
+						value="create_director">Create</button></td>
+				</form>
 			</tr>
 
 			<%
@@ -167,8 +211,12 @@
 			<tr>
 				<td><%=firstName%></td>
 				<td><%=lastName%></td>
-				<td><button class="btn btn-danger" type="submit"
-						name="action" value="delete_director">Delete</button></td>
+				<form action="editmovie.jsp">
+					<input type="hidden" name="movieId" value=<%=movieId%>> <input
+						type="hidden" name="directorId" value=<%=i.getId()%>>
+				<td><button class="btn btn-danger" type="submit" name="action"
+						value="delete_director">Delete</button></td>
+				</form>
 			</tr>
 			<%
 				}
@@ -185,10 +233,13 @@
 				<td>action</td>
 			</tr>
 			<tr>
+				<form action="editmovie.jsp">
+					<input type="hidden" name="movieId" value=<%=movieId%>>
 				<td><input name="first" class=form-control placeholder="first" /></td>
 				<td><input name="last" class=form-control placeholder="last" /></td>
-				<td><button class="btn btn-primary" type="submit"
-						name="action" value="create_actor">Create</button></td>
+				<td><button class="btn btn-primary" type="submit" name="action"
+						value="create_actor">Create</button></td>
+				</form>
 			</tr>
 
 			<%
@@ -198,10 +249,14 @@
 						String lastName = i.getLastName();
 			%>
 			<tr>
+				<form action="editmovie.jsp">
+					<input type="hidden" name="movieId" value=<%=movieId%>>
+					<input type="hidden" name="actorId" value=<%=i.getId()%>>
 				<td><%=firstName%></td>
 				<td><%=lastName%></td>
-				<td><button class="btn btn-danger" type="submit"
-						name="action" value="delete_actor">Delete</button></td>
+				<td><button class="btn btn-danger" type="submit" name="action"
+						value="delete_actor">Delete</button></td>
+				</form>
 			</tr>
 			<%
 				}

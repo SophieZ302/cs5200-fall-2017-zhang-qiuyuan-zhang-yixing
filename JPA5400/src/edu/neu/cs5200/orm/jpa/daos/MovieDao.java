@@ -1,5 +1,6 @@
 package edu.neu.cs5200.orm.jpa.daos;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 import edu.neu.cs5200.orm.jpa.entities.Actor;
 import edu.neu.cs5200.orm.jpa.entities.Comment;
+import edu.neu.cs5200.orm.jpa.entities.Critique;
 import edu.neu.cs5200.orm.jpa.entities.Director;
 import edu.neu.cs5200.orm.jpa.entities.Movie;
 import edu.neu.cs5200.orm.jpa.entities.Producer;
@@ -90,7 +92,7 @@ public class MovieDao extends BaseDao {
 		oldMovie.setActors(newMovie.getActors());
 		oldMovie.setDirectors(newMovie.getDirectors());
 		oldMovie.setDescription(newMovie.getDescription());
-//		em.persist(oldMovie);
+		em.merge(oldMovie);
 		try {
 			em.getTransaction().commit();
 		} catch (RollbackException ex) {
@@ -157,6 +159,81 @@ public class MovieDao extends BaseDao {
 		}
 	}
 	
+	
+	public void deleteDirector(Movie movie, Director director) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+		List<Director> dlist = movie.getDirectors();
+		Director toRemoveDirector = null;
+		for(Director dir : dlist) {
+			if (dir.getId() == director.getId()) {
+				toRemoveDirector = dir;
+			}
+		}
+		movie.getDirectors().remove(toRemoveDirector);
+
+		
+		List<Movie> mList = director.getMovies();
+		Movie toRemoveMovie = null;
+		for (Movie m: mList) {
+			if (m.getId() == movie.getId()) {
+				toRemoveMovie = m;
+			}
+		}
+		director.getMovies().remove(toRemoveMovie);
+		
+		em.merge(director);
+		em.merge(movie);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
+	
+	public void deleteActor(Movie movie, Actor actor) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		
+		List<Actor> alist = movie.getActors();
+		Actor toRemoveActor = null;
+		for(Actor act : alist) {
+			if (act.getId() == actor.getId()) {
+				toRemoveActor = act;
+			}
+		}
+		movie.getActors().remove(toRemoveActor);
+
+		
+		List<Movie> mList = actor.getMovies();
+		Movie toRemoveMovie = null;
+		for (Movie m: mList) {
+			if (m.getId() == movie.getId()) {
+				toRemoveMovie = m;
+			}
+		}
+		actor.getMovies().remove(toRemoveMovie);
+		
+		em.merge(actor);
+		em.merge(movie);
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+	}
+	
+	
 	public List<Movie> getMoviesByProducer(Producer producer) {
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -173,6 +250,81 @@ public class MovieDao extends BaseDao {
 			em.close();
 		}
 		return movies;
+	}
+	
+	public double getRegularRate(int movieId) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Movie movie = em.find(Movie.class, movieId);
+		double rst =  0.0;
+		double sum = 0;
+		int count = 0;
+		
+		Query query = em.createQuery("select c from Comment c where c.movie =:movieObject ", Comment.class)
+				.setParameter("movieObject", movie);
+		List<Comment> comments = query.getResultList();
+		for (Comment c : comments) {
+			if (!(c.getUser() instanceof Critique)) {
+				count++;
+				sum += c.getRate();
+			}
+		}
+		if (count == 0) {
+			rst =  0;
+		} else {
+			rst = sum / count;
+		}
+		
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		DecimalFormat df = new DecimalFormat("#.##");      
+		rst = Double.valueOf(df.format(rst));
+		return rst;
+	}
+
+	public double getCriticRate(int movieId) {
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Movie movie = em.find(Movie.class, movieId);
+		double rst =  0.0;
+		
+		Query query = em.createQuery("select c from Comment c where c.movie =:movieObj ", Comment.class)
+				.setParameter("movieObj", movie);
+		List<Comment> comments = query.getResultList();
+		
+		double sum = 0;
+		int count = 0;
+		for (Comment c : comments) {
+			if (c.getUser() instanceof Critique) {
+				count++;
+				sum += c.getRate();
+			}
+		}
+		if (count == 0) {
+			rst = 0;
+		} else {
+			rst = sum / count;
+		}
+				
+		try {
+			em.getTransaction().commit();
+		} catch (RollbackException ex) {
+			ex.printStackTrace();
+			tx.rollback();
+		} finally {
+			em.close();
+		}
+		DecimalFormat df = new DecimalFormat("#.##");      
+		rst = Double.valueOf(df.format(rst));
+		return rst;
 	}
 	
 	

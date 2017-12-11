@@ -24,6 +24,7 @@
 			String action = request.getParameter("logout_action");
 			if ("logout".equals(action)) {
 				session.setAttribute("user", null);
+				response.sendRedirect("index.jsp");
 			}
 		%>
 		<%
@@ -140,12 +141,14 @@
 			</tr>
 			<%
 				for (Movie movie : movies) {
+					double regRate = dao.getRegularRate(movie.getId());
+					double proRate = dao.getCriticRate(movie.getId());
 			%>
 			<tr>
 				<td><a href="moviedetail.jsp?movieId=
 				<%=movie.getId()%>"><%=movie.getTitle()%></a></td>
-				<td><%=movie.getCritiqueRate()%></td>
-				<td><%=movie.getRegularRate()%></td>
+				<td><%=proRate%></td>
+				<td><%=regRate%></td>
 			</tr>
 			<%
 				}
