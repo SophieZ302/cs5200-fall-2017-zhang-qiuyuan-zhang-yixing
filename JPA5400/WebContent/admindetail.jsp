@@ -51,12 +51,10 @@
 					Regular person = new Regular(newname, "", newemail);
 					RegularDao rdao = new RegularDao();
 					rdao.createRegular(person);
-					session.setAttribute("user", person);
 				} else if (role.equals("2")) {
 					Critique person = new Critique(newname, "", newemail);
 					CritiqueDao dao = new CritiqueDao();
 					dao.createCritique(person);
-					session.setAttribute("user", person);
 				} else if (role.equals("3")) {
 					Producer person = new Producer(newname, "", newemail);
 					ProducerDao dao = new ProducerDao();
