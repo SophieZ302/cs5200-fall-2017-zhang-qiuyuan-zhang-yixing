@@ -68,11 +68,11 @@ public class TestDao {
 		Admin admin = new Admin("admin", "admin", "admin@test1.com");
 		adminDao.createAdmin(admin);
 		
-		Regular alice = new Regular("alice", "alice", "alice@test1.com");
-		regularDao.createRegular(alice);
+		Critique alice = new Critique("alice", "alice", "alice@test1.com", "Christ", "Allen");
+		critiqueDao.createCritique(alice);
 		
-		Critique bob = new Critique("bob", "bob", "bob@test1.com", "Christ", "Yik");
-		critiqueDao.createCritique(bob);
+		Regular bob = new Regular("bob", "bob", "bob@test1.com");
+		regularDao.createRegular(bob);
 
 		Producer charlie = new Producer("charlie", "charlie", "charlie@test1.com", "star movie company");
 		producerDao.createProducer(charlie);
