@@ -242,16 +242,20 @@
 				<td><%=type%></td>
 				<%
 					if (type.equals("critic")) {
+						CritiqueDao cd = new CritiqueDao();
+						Critique c = cd.findCritiqueById(user.getId());
 				%>
-				<td><%=((Critique) user).getFirstname()%></td>
-				<td><%=((Critique) user).getLastname()%></td>
+				<td><%=c.getFirstname()%></td>
+				<td><%=c.getLastname()%></td>
 				<%
 					}
 				%>
 				<%
 					if (type.equals("producer")) {
+						ProducerDao pd = new ProducerDao();
+						Producer p = pd.findProducerById(user.getId());
 				%>
-				<td><%=((Producer) user).getCompanyName()%></td>
+				<td><%=p.getCompanyName()%></td>
 				<%
 					}
 				%>
