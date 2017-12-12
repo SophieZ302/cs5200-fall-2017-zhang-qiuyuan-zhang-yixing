@@ -28,7 +28,7 @@
 			} else if (user instanceof Producer) {
 				type = "producer";
 			} else if (user instanceof Critique) {
-				type = "critique";
+				type = "critic";
 			} else if (user instanceof Regular) {
 				type = "regular";
 			}
