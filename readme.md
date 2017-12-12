@@ -32,3 +32,4 @@
    * user TestDaos.main() to add some initial fields in the database
    * run on server http://localhost:8080/JPAMOVIES
 
+* Here is a video for all the test cases work flow-- [Link](https://www.youtube.com/playlist?list=PLlyJlZfnumvQXnCIT0_lonmLPk9rqEGnr)
