@@ -384,13 +384,13 @@
 
 		<h1>Like list</h1>
 		<ul class="list-group">
-		<%
+		<%	if (userDao.findUserById(user.getId()) != null) {
 			List<User> likeList = userDao.getLikeList(user.getId());
 			for (User u : likeList) {
 		%>
 		<li class="list-group-item"><a href="visitPerson.jsp?id=<%=u.getId()%>"><%=u.getUsername()%></a></li>
 		<%
-			}
+			}}
 		%>
 		</ul>
 	</div>
